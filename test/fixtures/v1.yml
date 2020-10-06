@@ -1,0 +1,19 @@
+---
+notice:
+  :api_key: "--- \n\
+    :api_key: secret\n\
+    :project: ecookbook\n\
+    :tracker: Bug\n\
+    :priority: 5\n"
+  :session: {}
+  :request: {}
+  :error_class: RuntimeError
+  :backtrace:
+  - (irb):4:in `irb_binding'
+  - /usr/local/rbenv/versions/1.8.7-p375/lib/ruby/1.8/irb/workspace.rb:52:in `irb_binding'
+  - /usr/local/rbenv/versions/1.8.7-p375/lib/ruby/1.8/irb/workspace.rb:52
+  :environment:
+    RUBYOPT: -rbundler/setup
+    HOME: /opt/planio_ama/current/tmp
+    RBENV_VERSION: 1.8.7-p375
+  :error_message: "RuntimeError: hello"

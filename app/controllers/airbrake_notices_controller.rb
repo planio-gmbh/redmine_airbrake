@@ -7,7 +7,7 @@ class AirbrakeNoticesController < ActionController::Base
       if notice.api_key_valid?
         if issue = notice.save
           case api_version
-          when 2
+          when 1,2
             key = RedmineAirbrake.rails5? ? :plain : :text
             render status: 200,
                    key => "Received notification.\n<id>#{issue.id}</id>"
@@ -38,6 +38,8 @@ class AirbrakeNoticesController < ActionController::Base
       logger.debug "Airbrake request:\n#{request.raw_post}"
     end
     case api_version
+    when 1
+      RedmineAirbrake::Notice::V1.new request.raw_post
     when 2
       RedmineAirbrake::Notice::V2.new request.raw_post
     when 3
