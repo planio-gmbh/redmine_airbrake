@@ -18,7 +18,7 @@ module RedmineAirbrake
         data = Psych.safe_load data,
           permitted_classes: [Symbol],
           permitted_symbols: ALLOWED_SYMBOLS
-        @notice = data['notice'].stringify_keys
+        @notice = V2.normalize_yaml_keys data['notice'].stringify_keys
         @config = V2.load_config fetch 'api_key'
 
         # keys in notice:
