@@ -6,6 +6,7 @@ module RedmineAirbrake
     class V2 < Base
 
       def self.load_config(string)
+        return {} if string.blank?
         config = JSON.parse(string) rescue {}
         if config.blank?
           config = Psych.safe_load(
