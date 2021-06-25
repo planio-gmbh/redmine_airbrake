@@ -1,23 +1,25 @@
 # frozen_string_literal: true
 
+require "psych"
+
 module RedmineAirbrake
   module Notice
     class V1 < Base
 
+      ALLOWED_SYMBOLS = %i[
+        notice api_key session request error_class backtrace environment error_message
+      ]
+
       def fetch(key)
-        @notice[":#{key}"] || @notice[key]
+        @notice[key]
       end
 
       def initialize(data)
-        require "safe_yaml/load"
-
-        data = SafeYAML.load data
-        @notice = data['notice']
-        cfg = fetch 'api_key'
-        @config = JSON.parse(cfg) rescue {}
-        if @config.blank?
-          @config = Hash[SafeYAML.load(cfg).map{|k,v| [k.to_s.sub( /\A:/,''), v]}]
-        end
+        data = Psych.safe_load data,
+          permitted_classes: [Symbol],
+          permitted_symbols: ALLOWED_SYMBOLS
+        @notice = data['notice'].stringify_keys
+        @config = V2.load_config fetch 'api_key'
 
         # keys in notice:
         #:error_class   => exception.class.name,
