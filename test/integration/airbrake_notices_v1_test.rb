@@ -50,10 +50,11 @@ class AirbrakeNoticesV1Test < Redmine::IntegrationTest
   end
 
   test "should require valid api key" do
-    Setting.mail_handler_api_key = 'wrong'
-    assert_no_difference "Issue.count" do
-      assert_no_difference "Journal.count" do
-        post '/notices', params: @notice
+    with_settings mail_handler_api_key: 'wrong' do
+      assert_no_difference "Issue.count" do
+        assert_no_difference "Journal.count" do
+          post '/notices', params: @notice
+        end
       end
     end
     assert_response 403
