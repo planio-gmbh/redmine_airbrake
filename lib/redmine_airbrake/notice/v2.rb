@@ -8,7 +8,7 @@ module RedmineAirbrake
       # in some constellations, symbols are not parsed as symbols but
       # instead, keys keep the leading ':'. We normalize that here
       def self.normalize_yaml_keys(hash)
-        Hash[hash.map{|k,v| [k.sub(/\A:/,''), v]}]
+        Hash[hash.map{|k,v| [k.delete_prefix(':'), v]}]
       end
 
       def self.load_config(string)
